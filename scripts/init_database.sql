@@ -4,7 +4,7 @@ Scrip summary - created this script to create the databse named 'warehouse' and 
 script creates the medallion architecture - bronze, silver, gold schemas
 */
 
--- Caution  - if this script is run , it deleted the existing warehouse databse, so proceed with caution.
+-- Caution  - if this script runs , it will  delete the existing warehouse databse, so proceed with caution ⚠️.
 
 USE master;
 CREATE DATABASE warehouse;
