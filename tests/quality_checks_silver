@@ -69,3 +69,27 @@ WHERE sls_sales != sls_quantity * sls_price
 OR sls_sales IS NULL OR sls_quantity is NULL OR sls_price IS NULL
 OR sls_sales <= 0 OR sls_quantity <= 0 or sls_price <= 0
 ORDER BY sls_sales, sls_quantity, sls_price
+
+
+
+-- identify invalid or old birtday dates in erp-cust
+SELECT DISTINCT 
+bdate FROm bronze.erp_cust_az12
+where bdate < '1924-01-01' OR bdate > GETDATE()
+
+-- cleaning gender column
+SELECT DISTINCT gen FROM bronze.erp_cust_az12
+
+-- checking country columsn in loc_a101
+SELECT DISTINCT cntry AS old_cntry,
+CASE 
+    WHEN UPPER(LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''), CHAR(160), '')))) = 'DE' THEN 'Germany'
+    WHEN UPPER(LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''), CHAR(160), '')))) IN ('US', 'USA') THEN 'United States'
+    WHEN cntry IS NULL OR LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''), CHAR(160), ''))) = '' THEN 'N/A'
+    ELSE LTRIM(RTRIM(REPLACE(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''), CHAR(160), '')))
+END AS cntry
+FROM bronze.erp_loc_a101
+ORDER BY cntry;
+
+
+
